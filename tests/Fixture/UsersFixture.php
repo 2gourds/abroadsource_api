@@ -39,9 +39,21 @@ class UsersFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'name' => 'Lorem ipsum dolor sit amet',
-                'created' => '2021-03-08 01:49:34',
-                'modified' => '2021-03-08 01:49:34',
+                'name' => 'lorem',
+                'created' => '2021-03-08 05:43:06',
+                'modified' => '2021-03-08 05:43:06',
+            ],
+            [
+                'id' => 2,
+                'name' => 'ipsum',
+                'created' => '2021-03-08 05:43:06',
+                'modified' => '2021-03-08 05:43:06',
+            ],
+            [
+                'id' => 3,
+                'name' => 'dolor',
+                'created' => '2021-03-08 05:43:06',
+                'modified' => '2021-03-08 05:43:06',
             ],
         ];
         parent::init();

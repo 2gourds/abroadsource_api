@@ -21,6 +21,8 @@ class EventsControllerTest extends TestCase
      */
     public $fixtures = [
         'app.Events',
+        'app.Users',
+        'app.EventsUsers',
     ];
 
     /**
@@ -116,5 +118,22 @@ class EventsControllerTest extends TestCase
                 ]
             ],
         ];
+    }
+
+    public function testSchedule_post_eventScheduleSuccess()
+    {
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/event', [
+            'eventName' => 'event 1',
+            'frequency' => 'Once-Off',
+            'startDateTime' => '2020-12-01 00:00',
+            'endDateTime' => '2020-12-15 00:00',
+            'duration' => 30,
+            'invitees' => [1,2,3]
+        ]);
+
+        $responseBody = json_decode($this->_response->getBody());
+        debug($responseBody);
     }
 }

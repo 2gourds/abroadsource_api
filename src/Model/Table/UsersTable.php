@@ -9,7 +9,7 @@ use Cake\Validation\Validator;
 /**
  * Users Model
  *
- * @property &\Cake\ORM\Association\BelongsToMany $Events
+ * @property \App\Model\Table\EventsTable&\Cake\ORM\Association\BelongsToMany $Events
  *
  * @method \App\Model\Entity\User get($primaryKey, $options = [])
  * @method \App\Model\Entity\User newEntity($data = null, array $options = [])
