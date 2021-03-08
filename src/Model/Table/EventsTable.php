@@ -66,6 +66,7 @@ class EventsTable extends Table
             ->notEmptyString('name');
 
         $validator
+            ->scalar('frequency')
             ->requirePresence('frequency', 'create')
             ->notEmptyString('frequency');
 
@@ -80,8 +81,7 @@ class EventsTable extends Table
 
         $validator
             ->integer('duration')
-            ->requirePresence('duration', 'create')
-            ->notEmptyString('duration');
+            ->allowEmptyString('duration');
 
         return $validator;
     }

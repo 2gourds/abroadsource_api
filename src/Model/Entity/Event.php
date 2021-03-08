@@ -8,12 +8,12 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $name
- * @property int $frequency
+ * @property string $frequency
  * @property \Cake\I18n\FrozenTime $start_date_time
  * @property \Cake\I18n\FrozenTime|null $end_date_time
- * @property int $duration
- * @property \Cake\I18n\FrozenTime $created
- * @property \Cake\I18n\FrozenTime $modified
+ * @property int|null $duration
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\FrozenTime|null $modified
  *
  * @property \App\Model\Entity\User[] $users
  */

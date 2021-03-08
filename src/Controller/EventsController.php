@@ -24,8 +24,26 @@ class EventsController extends AppController
      */
     public function schedule()
     {
-        $this->RequestHandler->renderAs($this, 'json');
-        $this->response->withType('application/json');
-        $this->set('_serialize', true);
+        $this->request->allowMethod(['post']);
+        $response = $this->response;
+        $response = $response->withType('application/json');
+
+        $event = $this->Events->newEntity([
+            'name' => $this->request->getData('eventName'),
+            'frequency' => $this->request->getData('frequency'),
+            'start_date_time' => $this->request->getData('startDateTime'),
+            'end_date_time' => $this->request->getData('endDateTime'),
+            'duration' => $this->request->getData('duration'),
+            'users' => $this->request->getData('invitees')
+        ]);
+
+        if (!$event->hasErrors()) {
+            $this->Events->save($event);
+            $response = $response->withStringBody(json_encode($event));
+        } else {
+            $response = $response->withStatus(400);
+        }
+
+        return $response; 
     }
 }
