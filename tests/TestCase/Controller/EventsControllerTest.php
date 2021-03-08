@@ -2,6 +2,7 @@
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\EventsController;
+use Cake\Routing\Router;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -153,7 +154,16 @@ class EventsControllerTest extends TestCase
     {
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->get('/event/instance');
+        $this->get(Router::url([
+            'controller' => 'events', 
+            'action' => 'getEventInstance',
+            '?' => [
+                'from' => '2020-12-01 00:00',
+                'to' => '2020-12-31 00:00',
+                'invitees' => '1,2'
+            ]
+        ]));
+
         $this->assertResponseOk();
     }
 }

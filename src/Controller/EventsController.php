@@ -2,6 +2,8 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\I18n\FrozenTime;
+use Cake\ORM\Query;
 use Cake\Utility\Hash;
 
 /**
@@ -71,6 +73,43 @@ class EventsController extends AppController
         $this->request->allowMethod(['get']);
         $response = $this->response;
         $response = $response->withType('application/json');
+
+        $from = $this->request->getQuery('from');
+        $to = $this->request->getQuery('to');
+        $invitees = explode(",", $this->request->getQuery('invitees'));
+
+        $query = $this->Events->find();
+        if ($from)
+        {
+            $query = $query->where(['start_date_time >=' => $from]);
+        }
+        if ($to)
+        {
+            $query = $query->where(['start_date_time <=' => $to]);
+        }
+        if ($invitees)
+        {
+            $query = $query->contain('Users', function (Query $q) use ($invitees) {
+                return $q
+                    ->where(['Users.id IN' => $invitees]);
+            });
+        }
+
+        $results = $query->all()
+            ->map(function ($row) {
+                $start_date_time = $row->start_date_time;
+
+                return [
+                    'event_id' => $row->id,
+                    'eventName' => $row->name,
+                    'startDateTime' => $start_date_time->i18nFormat('yyyy-MM-dd HH:mm'),
+                    'endDateTime' => $start_date_time->addMinutes($row->duration)->i18nFormat('yyyy-MM-dd HH:mm'),
+                    'invitees' =>  Hash::extract($row->users, '{n}.id'),
+                ];
+            })
+            ->toArray();
+
+        $response = $response->withStringBody(json_encode($results));
         return $response; 
     }
 }
