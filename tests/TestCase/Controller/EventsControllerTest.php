@@ -143,4 +143,17 @@ class EventsControllerTest extends TestCase
         $this->assertEquals($data['duration'], $responseBody->duration);
         $this->assertEquals($data['invitees'], $responseBody->invitees);
     }
+
+    /**
+     * Test getEventInstance method
+     *
+     * @return void
+     */
+    public function testGetEventInstance_get_responseOk() 
+    {
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->get('/event/instance');
+        $this->assertResponseOk();
+    }
 }

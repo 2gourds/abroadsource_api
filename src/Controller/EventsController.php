@@ -60,4 +60,17 @@ class EventsController extends AppController
 
         return $response; 
     }
+
+    /**
+     * getEventInstance method
+     *
+     * @return \Cake\Http\Response|null
+     */
+    public function getEventInstance()
+    {
+        $this->request->allowMethod(['get']);
+        $response = $this->response;
+        $response = $response->withType('application/json');
+        return $response; 
+    }
 }
