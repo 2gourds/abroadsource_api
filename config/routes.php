@@ -51,6 +51,12 @@ Router::scope('/', function (RouteBuilder $routes) {
         'httpOnly' => true
     ]));
 
+    // Allow RESTful routing
+    $routes->setExtensions(['json']);
+    $routes->resources('Events', [
+        'actions' => ['create' => 'schedule']
+    ]);
+
     /**
      * Apply a middleware to the current route scope.
      * Requires middleware to be registered via `Application::routes()` with `registerMiddleware()`
@@ -63,6 +69,8 @@ Router::scope('/', function (RouteBuilder $routes) {
      * to use (in this case, src/Template/Pages/home.ctp)...
      */
     $routes->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
+
+    $routes->connect('/event', ['controller' => 'Events', 'action' => 'schedule']);
 
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
