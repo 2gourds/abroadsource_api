@@ -1,16 +1,43 @@
-# CakePHP Application Skeleton
-
-[![Build Status](https://img.shields.io/travis/cakephp/app/master.svg?style=flat-square)](https://travis-ci.org/cakephp/app)
-[![Total Downloads](https://img.shields.io/packagist/dt/cakephp/app.svg?style=flat-square)](https://packagist.org/packages/cakephp/app)
-
-A skeleton for creating applications with [CakePHP](https://cakephp.org) 3.x.
-
-The framework source code can be found here: [cakephp/cakephp](https://github.com/cakephp/cakephp).
 
 ## Installation
 
-1. Download [Composer](https://getcomposer.org/doc/00-intro.md) or update `composer self-update`.
-2. Run `php composer.phar create-project --prefer-dist cakephp/app [app_name]`.
+Please check the [official cakephp installation guide](https://book.cakephp.org/3.0/en/installation.html) for server requirements before you start.
+
+1. Clone the repository.
+
+```bash
+git clone git@github.com:2gourds/abroadsource_api.git
+```
+
+2. Switch to the repo folder.
+
+```bash
+cd abroadsource_api
+```
+
+3. Install all the dependencies using composer.
+
+```bash
+composer install
+```
+
+4. Configure your database settings in the `config/app.php` file
+
+```bash
+vi config/app.php
+```
+
+5. Run the database migrations (Set the database connection in app.php)
+
+```bash
+bin/cake migrations migrate
+```
+
+6. Start the local development server.
+
+```bash
+bin/cake server -p 8765
+```
 
 If Composer is installed globally, run
 
@@ -33,19 +60,37 @@ bin/cake server -p 8765
 
 Then visit `http://localhost:8765` to see the welcome page.
 
-## Update
+## Database seeding
 
-Since this skeleton is a starting point for your application and various files
-would have been modified as per your needs, there isn't a way to provide
-automated upgrades, so you have to do any updates manually.
+Populate the database with seed data with relationships which includes users and events. This can help you to quickly start testing the api or couple a frontend and start using it with ready content.
 
-## Configuration
+```bash
+bin/cake migrations seed
+```
 
-Read and edit `config/app.php` and setup the `'Datasources'` and any other
-configuration relevant for your application.
+## Testing the API
 
-## Layout
+Run the cakephp development server.
 
-The app skeleton uses a subset of [Foundation](http://foundation.zurb.com/) (v5) CSS
-framework by default. You can, however, replace it with any other library or
-custom styles.
+```bash
+bin/cake server
+```
+
+1. Schedule an event by using the endpoint for posting data.
+
+```bash
+POST http://localhost:8765/event
+Content-Type: application/json
+Request Body:
+{"eventName": "event 1","frequency": "Once-Off","startDateTime":
+"2020-12-01 00:00","endDateTime": "2020-12-15 00:00", "duration":
+30, "invitees": [1,2,3]}
+
+```
+
+2. Get all event instances by using the endpoint that returns all event instances for a given datetime range and/or invitees.
+
+```bash
+GET http://localhost:8765/event/instance?from=2020-12-01 00:00&to=2020-12-31 00:00&invitees=1,2
+Content-Type: application/json
+```
