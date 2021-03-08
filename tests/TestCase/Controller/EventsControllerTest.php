@@ -124,16 +124,23 @@ class EventsControllerTest extends TestCase
     {
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->post('/event', [
+        $data = [
             'eventName' => 'event 1',
             'frequency' => 'Once-Off',
             'startDateTime' => '2020-12-01 00:00',
             'endDateTime' => '2020-12-15 00:00',
             'duration' => 30,
             'invitees' => [1,2,3]
-        ]);
+        ];
+        $this->post('/event', $data);
 
         $responseBody = json_decode($this->_response->getBody());
-        debug($responseBody);
+        $this->assertNotNull($responseBody->id);
+        $this->assertEquals($data['eventName'], $responseBody->eventName);
+        $this->assertEquals($data['frequency'], $responseBody->frequency);
+        $this->assertEquals($data['startDateTime'], $responseBody->startDateTime);
+        $this->assertEquals($data['endDateTime'], $responseBody->endDateTime);
+        $this->assertEquals($data['duration'], $responseBody->duration);
+        $this->assertEquals($data['invitees'], $responseBody->invitees);
     }
 }

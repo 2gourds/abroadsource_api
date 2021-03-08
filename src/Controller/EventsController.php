@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Utility\Hash;
 
 /**
  * Events Controller
@@ -28,6 +29,7 @@ class EventsController extends AppController
         $response = $this->response;
         $response = $response->withType('application/json');
 
+        // Prepare event entity from POST data
         $event = $this->Events->newEntity([
             'name' => $this->request->getData('eventName'),
             'frequency' => $this->request->getData('frequency'),
@@ -39,8 +41,7 @@ class EventsController extends AppController
             ]
         ], ['associated' => ['Users']]);
 
-        debug($event);
-
+        // Validate. Save the record if no errors are found.
         if (!$event->hasErrors()) {
             $this->Events->save($event);
             $response = $response->withStringBody(json_encode([
@@ -50,9 +51,10 @@ class EventsController extends AppController
                 'startDateTime' => $event->start_date_time,
                 'endDateTime' => $event->end_date_time,
                 'duration' => $event->duration,
-                'invitees' => $event->users,
+                'invitees' => Hash::extract($event->users, '{n}.id'),
             ]));
         } else {
+            // Set response status code as 400 (Bad Request) if the data is malformed
             $response = $response->withStatus(400);
         }
 
