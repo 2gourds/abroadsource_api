@@ -35,11 +35,6 @@ class CreateEvents extends AbstractMigration
             'limit' => 11,
             'null' => true,
         ]);
-        $table->addColumn('', 'string', [
-            'default' => null,
-            'limit' => 255,
-            'null' => false,
-        ]);
         $table->create();
     }
 }
