@@ -46,6 +46,14 @@ class EventsController extends AppController
         // Validate. Save the record if no errors are found.
         if (!$event->hasErrors()) {
             $this->Events->save($event);
+            /*
+            TODO: Data validation for requirements specifications.
+            - endDateTime should be null for Once-Off data; 
+            - duration should not cause two event instance to overlap for recurring events
+            - if day of month reference is not valid for a month (ie. 31). use the last day of that month (Monthly)
+
+            TODO: Database overhaul for recurring event instances.
+            */
             $response = $response->withStringBody(json_encode([
                 'id' => $event->id,
                 'eventName' => $event->name,
@@ -77,8 +85,11 @@ class EventsController extends AppController
         $from = $this->request->getQuery('from');
         $to = $this->request->getQuery('to');
         $invitees = explode(",", $this->request->getQuery('invitees'));
+        // TODO: Request parameter validation
 
         $query = $this->Events->find();
+        // TODO: Query builder to include instances of recurring events (i.e. Weekly and Monthly frequencies)
+        // May have to overhaul database design to allow for streamlined query builder access to recurring events
         if ($from)
         {
             $query = $query->where(['start_date_time >=' => $from]);

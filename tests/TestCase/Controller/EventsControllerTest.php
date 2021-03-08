@@ -166,4 +166,7 @@ class EventsControllerTest extends TestCase
 
         $this->assertResponseOk();
     }
+
+    // TODO: Unit test for malformed requests.
+    // TODO: Unit test to validate response items.
 }
